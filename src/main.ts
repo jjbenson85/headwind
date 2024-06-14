@@ -1,3 +1,4 @@
+import { addPsuedoSelectors } from "./addPsuedoSelectors";
 import { createStyleTagText } from "./createStyleTagText";
 import { processProperties } from "./processProperties";
 import { useExtendedColors } from "./useExtendedColors";
@@ -56,15 +57,6 @@ function main(config?: { propertyProcessors: PropertyProcessor[] }): void {
   const style = document.createElement("style");
   style.textContent = createStyleTagText(t);
   document.head.appendChild(style);
-}
-
-
-
-function addPsuedoSelectors<T extends { className: string }>(node: T) {
-  return {
-    ...node,
-    psuedoSelectors: node.className.split(":").slice(1),
-  };
 }
 
 function addSelector<T extends { className: string }>(classNode: T) {
