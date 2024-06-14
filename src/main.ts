@@ -1,3 +1,4 @@
+import { addClassName } from "./addClassName";
 import { addPsuedoSelectors } from "./addPsuedoSelectors";
 import { addSelector } from "./addSelector";
 import { createStyleTagText } from "./createStyleTagText";
@@ -58,11 +59,6 @@ function main(config?: { propertyProcessors: PropertyProcessor[] }): void {
   const style = document.createElement("style");
   style.textContent = createStyleTagText(t);
   document.head.appendChild(style);
-}
-
-
-function addClassName(className: string) {
-  return { className };
 }
 
 function processHTML() {
