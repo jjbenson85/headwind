@@ -1,5 +1,6 @@
 {
   "name": "@jjbenson85/headwind",
   "version": "0.1.0",
-  "exports": "./mod.ts"
+  "exports": "./mod.ts",
+  "exclude": ["*.html", "*.test.ts"]
 }
