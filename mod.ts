@@ -1,12 +1,12 @@
 // mod.ts
 /**
- * A module providing a function to greet people.
+ * A css utility framework that doesn't require a build step.
  *
  * @example
  * ```ts
- * import { greet } from "@luca/greet";
+ * import { headwind } from "@jjbenson85/headwind";
  *
- * greet("Luca");
+ * headwind();
  * ```
  *
  * @module
