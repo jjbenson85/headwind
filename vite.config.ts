@@ -11,8 +11,5 @@ export default defineConfig({
       // the proper extensions will be added
       fileName: "headwind",
     },
-    watch: {
-      // https://rollupjs.org/configuration-options/#watch
-    },
   },
 });
