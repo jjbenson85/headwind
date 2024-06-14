@@ -6,7 +6,7 @@
  *
  * @param config
  */
-function headwind(config: { propertyProcessors: PropertyProcessor[] }) {
+export function headwind(config: { propertyProcessors: PropertyProcessor[] }) {
   document.addEventListener("DOMContentLoaded", () => main(config));
 }
 function main(config?: { propertyProcessors: PropertyProcessor[] }): void {
@@ -383,5 +383,3 @@ type PropertyProcessor = (
   breakpoint: string;
   rootVars: string[];
 }[];
-
-export { headwind };
