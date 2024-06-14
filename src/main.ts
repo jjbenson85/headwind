@@ -1,4 +1,12 @@
-function createApp(config: { propertyProcessors: PropertyProcessor[] }) {
+/**
+ * Call this function to run the headwind utility
+ * It will process the HTML and create a style tag with the utility classes
+ *
+ * It takes an optional config object with a propertyProcessors array
+ *
+ * @param config
+ */
+function headwind(config: { propertyProcessors: PropertyProcessor[] }) {
   document.addEventListener("DOMContentLoaded", () => main(config));
 }
 function main(config?: { propertyProcessors: PropertyProcessor[] }): void {
@@ -376,4 +384,4 @@ type PropertyProcessor = (
   rootVars: string[];
 }[];
 
-export { createApp as headwind };
+export { headwind };
