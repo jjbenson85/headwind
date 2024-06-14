@@ -1,3 +1,4 @@
+import { useImportant } from "./useImportant";
 import { useSimpleShorthand } from "./useSimpleShorthand";
 
 const useHandleNonUnitNumbers: PropertyProcessor = (items) => {
@@ -221,15 +222,6 @@ const useExtendedColors: PropertyProcessor = (items) => {
       ...item,
       value: mappedParts.join("_"),
     };
-  });
-};
-
-const useImportant: PropertyProcessor = (items) => {
-  return items.map((item) => {
-    if (item.className.endsWith("!") || item.value.endsWith("!")) {
-      item.value = item.value + "_!important";
-    }
-    return item;
   });
 };
 
