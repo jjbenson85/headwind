@@ -1,6 +1,6 @@
 // mod.ts
 /**
- * A css utility framework that doesn't require a build step.
+ * A runtime css utility framework.
  *
  * @example
  * ```ts
