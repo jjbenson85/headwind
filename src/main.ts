@@ -1,4 +1,5 @@
 import { addPsuedoSelectors } from "./addPsuedoSelectors";
+import { addSelector } from "./addSelector";
 import { createStyleTagText } from "./createStyleTagText";
 import { processProperties } from "./processProperties";
 import { useExtendedColors } from "./useExtendedColors";
@@ -59,19 +60,7 @@ function main(config?: { propertyProcessors: PropertyProcessor[] }): void {
   document.head.appendChild(style);
 }
 
-function addSelector<T extends { className: string }>(classNode: T) {
-  const selector = classNode.className
-    .replaceAll(":", "\\:")
-    .replaceAll(".", "\\.")
-    .replaceAll("@", "\\@")
-    .replaceAll("!", "\\!")
-    .replaceAll("%", "\\%")
-    .replaceAll("[", "\\[")
-    .replaceAll("]", "\\]")
-    .replaceAll("/", "\\/");
 
-  return { ...classNode, selector };
-}
 function addClassName(className: string) {
   return { className };
 }
