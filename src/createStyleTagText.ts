@@ -1,13 +1,6 @@
-export function createStyleTagText(
-  nodes: {
-    selector: string;
-    psuedoSelectors: string[];
-    property: string;
-    value: string;
-    breakpoint: string;
-    rootVars: string[];
-  }[]
-) {
+import { Item } from "./main";
+
+export function createStyleTagText(nodes: Item[]) {
   const allRootVars = [
     `--theme-saturation: 80%;`,
     ...new Set(nodes.flatMap((e) => e.rootVars)),
@@ -19,13 +12,11 @@ export function createStyleTagText(
 
     const strs = selectors.map((selector) => {
       const selectorNodes = bpNodes.filter((e) => e.selector === selector);
-      const psuedoSelectors = selectorNodes.flatMap((e) => e.psuedoSelectors);
-      const psuedoSelectorString = psuedoSelectors.length
-        ? `:is(${psuedoSelectors.map((e) => `:${e}`).join(", ")})`
-        : "";
-      let str = `.${selector}${psuedoSelectorString} {`;
+      let str = `${selector} {`;
       for (const node of selectorNodes) {
-        str += `\n\t${node.property}: ${node.value.replaceAll("_", " ")};`;
+        const property = node.property;
+        const value = node.value.replaceAll("_", " ");
+        str += `\n\t${property}: ${value};`;
       }
       str += "\n}";
 

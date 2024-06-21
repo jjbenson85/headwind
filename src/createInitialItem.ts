@@ -1,6 +1,6 @@
 import { Item } from "./main";
 
-export function addClassName(className: string): Item {
+export function createInitialItem(className: string): Item {
   return {
     className,
     selector: "",
@@ -8,6 +8,5 @@ export function addClassName(className: string): Item {
     value: "",
     breakpoint: "",
     rootVars: [],
-    psuedoSelectors: [],
   };
 }

@@ -7,7 +7,7 @@ function extractValueFromSquareBrackets(str: string) {
 }
 export function processProperties(propertyProcessors: PropertyProcessor[]) {
   return function (classNode: Item) {
-    const property = classNode.className.split("[")[0];
+    const property = classNode.className.split("[")[0].split("_").at(-1) ?? "";
     const foundValues = extractValueFromSquareBrackets(classNode.className);
     const items = [...foundValues].map(([_, item]): Item => {
       const [value, breakpoint] = item.split("@");

@@ -44,14 +44,13 @@
 
   <body>
     <div id="app">
-      <!-- <div>
-        <h1
-          class="bg[red][blue@md]:hover:focus bg[green][orange@md] transition[background-color_0.3s] b-r[4] p-x[4] p-y[1] text[4xl]"
-        >
-          Hello World
-        </h1>
-        <p class="hover-test cursor[pointer] m-t[-4px]">This is a paragraph</p>
-      </div> -->
+      <div class='grandparent d[flex] h-[screen] justify-content[center] my[8]'>
+        <div class='parent text[xl]'>
+          <strong class='.grandparent:focus_.parent:hover_color[red-500]'>Hover on me </strong>
+          <strong class='.parent:hover_color[green-500]'>the texts will be </strong>
+          <strong class='.parent:hover_color[blue-500]'>of different colors</strong>
+        </div>
+      </div>
 
       <div class="d[flex] fd[column] gap[2] p[4]">
         <input type="text" j-model="className" class="flex[1] p[4]" />
@@ -61,7 +60,7 @@
       </div>
 
       <div>
-      <div j-for="i in 0" class="w[100vw] overflow[scroll] d[flex] gap[1]">
+      <div j-for="i in 1" class="w[100vw] overflow[scroll] d[flex] gap[1]">
         <div
           j-for="color in colors"
           class="d[flex] fd[column] fw[wrap] ai[center] gap[1] w[320]"

@@ -1,5 +1,4 @@
-import { addClassName } from "./addClassName";
-import { addPsuedoSelectors } from "./addPsuedoSelectors";
+import { createInitialItem } from "./createInitialItem";
 import { addSelector } from "./addSelector";
 import { createStyleTagText } from "./createStyleTagText";
 import { processProperties } from "./processProperties";
@@ -18,7 +17,6 @@ export type Item = {
   value: string;
   breakpoint: string;
   rootVars: string[];
-  psuedoSelectors: string[];
   selector: string;
 };
 export type PropertyProcessor = (items: Item[]) => Item[];
@@ -32,7 +30,6 @@ export type PropertyProcessor = (items: Item[]) => Item[];
  * @param config
  */
 export function headwind(config: { propertyProcessors: PropertyProcessor[] }) {
-  // document.addEventListener("DOMContentLoaded", () => main(config));
   const observer = new MutationObserver(() => {
     console.log("callback that runs when observer is triggered");
     main(config);
@@ -48,7 +45,14 @@ export function headwind(config: { propertyProcessors: PropertyProcessor[] }) {
 }
 function main(config?: { propertyProcessors: PropertyProcessor[] }): void {
   console.time("headwind");
-  const style = document.createElement("style");
+
+  let style = document.getElementById("headwind-style");
+
+  if (!style) {
+    style = document.createElement("style");
+    style.id = "headwind-style";
+    document.head.appendChild(style);
+  }
 
   const propertyProcessors: PropertyProcessor[] = [
     ...(config?.propertyProcessors ?? []),
@@ -65,17 +69,16 @@ function main(config?: { propertyProcessors: PropertyProcessor[] }): void {
   const els = document.querySelectorAll("*");
   const classes = getAllClasses(els);
 
-  let allNodes: Item[] = [];
+  let allItems: Item[] = [];
   for (const className of classes) {
-    const node = addClassName(className);
-    const node2 = addSelector(node);
-    const node3 = addPsuedoSelectors(node2);
-    const nodes = processProperties(propertyProcessors)(node3);
-    allNodes.push(...nodes);
+    const item = createInitialItem(className);
+    const itemWithSelectors = addSelector(item);
+    const items = processProperties(propertyProcessors)(itemWithSelectors);
+    allItems.push(...items);
   }
 
-  style.textContent = createStyleTagText(allNodes);
-  document.head.appendChild(style);
+  style.textContent = createStyleTagText(allItems);
+
   console.timeEnd("headwind");
 }
 
@@ -88,6 +91,3 @@ function getAllClasses(els: NodeListOf<Element>) {
   }
   return bucket;
 }
-
-
-
