@@ -12,9 +12,10 @@ Add the following to the top of your HTML document.
 ```
 
 ## Getting Started
+### Class names as CSS Rule constructors
+Each class name will create a new CSS Rule, using the class name as the selector and the parsed value of the class name to create the CSS Declaration.
 
-#### Property Value pairs
-Each class name will create a new CSS rule, using the class name as the selector and the parsed value of the class name to create the css property and value.
+In the most basic form, you can write the CSS Property, for example `background-color`, followed by the CSS Property in square brackets, `[red]`.
 
 
 ```HTML
@@ -30,9 +31,8 @@ Each class name will create a new CSS rule, using the class name as the selector
 ```
 *NB. Special characters such as `[` and `]` will be escaped with `\` in the CSS rule*
 
+Any CSS Declaration can be created this way. If you would add a space in the CSS Value, you must use a `_`.
 
-#### Compound values
-To use a complex value made of multiple values, separate then with an `_`
 
 ```HTML
 <div class="box-shadow[0_0_8px_-1px_blue]"><div>
@@ -46,7 +46,7 @@ becomes
 }
 ```
 
-#### Psuedo-selectors
+### Psuedo-selectors
 To use psuedo-selectors like `:hover` just add them as a suffix.
 
 ```HTML
@@ -76,7 +76,7 @@ becomes
 }
 ```
 
-#### Break Points
+### Break Points
 To get different behaviours at different screen widths, add an `@` with the breakpoint label after the value.
 
 ```HTML
@@ -135,7 +135,7 @@ becomes
 ```
 
 
-#### Unit Values
+### Unit Values
 To help keep consitency with padding and margin sizes, some default sizes are provided. They are accessed by passing a number value without a unit.
 
 
@@ -151,14 +151,14 @@ becomes
 }
 
 .p\[4\] {
-	padding: var(--unit-4);
+    padding: var(--unit-4); 
 }
 ```
 
  By default, the unit values are the number * 0.25 rem and can take any positive or negative number
 
 
- #### Labeled Sizes
+ ### Labeled Sizes
  Instead of using number units, labels such as `xs` for extra-small or `md` for medium can be passed.
 
 
@@ -188,7 +188,7 @@ becomes
 | \<number>xl 	| (4 + number ) * 0.25 rem 	|
 
 
-#### Shorthand Values
+### Shorthand Values
 For brevity, some often used properties can accessed using special shorthand names
 
 ```HTML
@@ -206,7 +206,7 @@ becomes
 	padding: var(--unit-4);
 }
 ```
-#### Available Shorthand properties
+### Available Shorthand properties
 
 | label 	| property                     	|
 |-------	|------------------------------	|
@@ -237,10 +237,10 @@ becomes
 
 
 
-#### Special Properties
+### Special Properties
 Some special properties have been provided for convenience!
 
-#### Text
+### Text
 ```HTML
 <div class="text[xl]"></div>
 ```
@@ -249,12 +249,12 @@ becomes
 
 ```CSS
 .text\[xl\] {
-	font-size: 1.25rem;
-	line-height: 1.75rem;
+    font-size: 1.25rem;
+    line-height: 1.75rem;
 }
 ```
 
-#### Text sizes
+### Text sizes
 
 | label 	| font-size 	| line-height 	|
 |-------	|-----------	|-------------	|
@@ -273,8 +273,10 @@ becomes
 | 9xl   	| 8 rem     	| 1           	|
 
 
-#### Colors
-Color helpers are provided to control the color, lightness and transparency. Colors can be set by specifiyng the `<Color Name>-<Lightness>\<Transparency>` 
+### Colors
+Color helpers are provided to control the color, lightness and transparency. 
+
+The syntax is `<Color Name>-<Lightness>/<Transparency>` eg. red-400/90
 
  Color Name is one of
 - red
@@ -318,7 +320,7 @@ becomes
 }
 ```
 
-#### Reacting to parents 
+### Reacting to parents 
 Sometimes you want a child styes to change depending on the class or state applied to a parent element
 
 You can achieve this by prefixing your child class with a `.` and the class to be applied to the parent then separated by an `_`
@@ -333,9 +335,7 @@ In the following example, imagine `active` is dynamically applied and remove fro
 
 Whenever the outer div has the class `active` applied, the child's background color will change to green.
 
-#### Ancestor classes and pseudo-selectors
-
-
+### Ancestor classes and pseudo-selectors
 
 To respond to psuedo selectors on the parent, add a `:` and the pseudo selector.
 
@@ -348,6 +348,65 @@ To respond to psuedo selectors on the parent, add a `:` and the pseudo selector.
 Whenever the div with the `parent` class is hovered, the child div will change its background color to green.
 
 
+### ! Important
+If you need to override a property set externally, you can suffix the class name with  a `!` to add `! important` to the CSS Declaration
 
+
+```HTML
+<div class="font-size[2rem]!"></div>
+```
+
+ becomes
+
+ ```CSS
+.font-size\[2rem\]\! {
+    font-size: 2rem !important;
+}
+```
+
+### Extending
+
+You can add extra functionality by passing a Property Processor function to headwind.
+
+Here is an example using the built in `! important` function
+
+```TS
+
+import { headwind } from "...headwind.js";
+
+    type Item = {
+        className: string;
+        property: string;
+        value: string;
+        breakpoint: string;
+        rootVars: string[];
+        selector: string;
+    };
+
+    type PropertyProcessor = (items: Item[]) => Item[];
+
+    const useImportant:PropertyProcessor = (items) => {
+        return items.map((item) => {
+            if (item.className.endsWith("!") || item.value.endsWith("!")) {
+                item.value = item.value + "_!important";
+            }
+            return item;
+        });
+    };
+
+    headwind({
+        propertyProcessors:[useImportant]
+    });
+
+```
+
+
+### TODO:
+- Improve property processor 
+- Add tests
+- User setable variables for breakpoints
+- User setable variables for units
+- User setable variables for size labels
+- UI to change variables
 
 

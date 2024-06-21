@@ -4,8 +4,11 @@ function parsePsuedoSelectors(str: string) {
   if (!str) return "";
   const psuedoStr = str
     .split(":")
+    .filter((e) => e !== "!")
     .map((e) => `:${e}`)
     .join(", ");
+
+    if (!psuedoStr) return "";
 
   return `:is(${psuedoStr})`;
 }
