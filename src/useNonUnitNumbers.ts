@@ -1,5 +1,6 @@
 import { PropertyProcessor } from "./main";
 
+// TODO: Don't need to use vars for this
 export const useNonUnitNumbers: PropertyProcessor = (items) => {
   const lookup: string[] = ["flex"];
   return items.map((item) => {

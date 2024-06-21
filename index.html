@@ -17,6 +17,7 @@
       });
 
       const className = signal("bg[red-500] p[4] rounded[4] text[4xl]");
+      const parentClassName = signal("bg[blue-500] p[4] rounded[4] text[4xl]");
       const colors = [
         "red",
         "orange",
@@ -33,6 +34,7 @@
         {
           message: "JAMES",
           className,
+          parentClassName,
           colors,
         },
         {
@@ -52,15 +54,24 @@
         </div>
       </div>
 
-      <div class="d[flex] fd[column] gap[2] p[4]">
-        <input type="text" j-model="className" class="flex[1] p[4]" />
-        <div :class="className" j-text="className"></div>
-        <div :class="className" j-text="className"></div>
-        <div :class="className" j-text="className"></div>
+      <div class="d[flex] flex-direction[column] gap[2] p[4]">
+        <label class="d[flex] align-items[center]">
+          <div class="mx[2]">Parent</div>
+          <input type="text" j-model="parentClassName" class="flex[1] p[4]" />
+        </label>
+      <!-- </div>
+      <div class="d[flex] flex-direction[column] gap[2] p[4]"> -->
+        <label class="d[flex] align-items[center]">
+          <div class="mx[2]">Child</div>
+          <input type="text" j-model="className" class="flex[1] p[4]" />
+        </label>
+        <div :class="parentClassName">
+          <div :class="className" j-text="className"></div>
+        </div>
       </div>
 
       <div>
-      <div j-for="i in 1" class="w[100vw] overflow[scroll] d[flex] gap[1]">
+      <div j-for="i in 0" class="w[100vw] overflow[scroll] d[flex] gap[1]">
         <div
           j-for="color in colors"
           class="d[flex] fd[column] fw[wrap] ai[center] gap[1] w[320]"

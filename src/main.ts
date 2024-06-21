@@ -6,7 +6,7 @@ import { useExtendedColors } from "./useExtendedColors";
 import { useHorizontalAndVerticalShorthand } from "./useHorizontalAndVerticalShorthand";
 import { useImportant } from "./useImportant";
 import { useNonUnitNumbers } from "./useNonUnitNumbers";
-import { useRoundedSizes } from "./useRoundedSizes";
+import { useSizeLabels } from "./useSizeLabels";
 import { useSimpleShorthand } from "./useSimpleShorthand";
 import { useTextSizes } from "./useTextSizes";
 import { useUnits } from "./useUnits";
@@ -62,7 +62,7 @@ function main(config?: { propertyProcessors: PropertyProcessor[] }): void {
     useNonUnitNumbers,
     useUnits,
     useTextSizes,
-    useRoundedSizes,
+    useSizeLabels,
     useExtendedColors,
   ];
 

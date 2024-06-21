@@ -7,13 +7,15 @@ export const useUnits: PropertyProcessor = (items) =>
     if (!some) return item;
 
     vals.forEach((val) => {
-      if (isNaN(Number(val))) return val;
+      const num = Number(val);
+      if (!num) return val;
       item.rootVars.push(`--unit-${val}: ${Number(val) * 0.25}rem;`);
     });
 
     const value = vals
       .map((val) => {
-        if (isNaN(Number(val))) return val;
+         const num = Number(val);
+         if (!num) return val;
         return `var(--unit-${val})`;
       })
       .join("_");

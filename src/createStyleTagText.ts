@@ -3,6 +3,7 @@ import { Item } from "./main";
 export function createStyleTagText(nodes: Item[]) {
   const allRootVars = [
     `--theme-saturation: 80%;`,
+
     ...new Set(nodes.flatMap((e) => e.rootVars)),
   ];
   const breakpoints = [...new Set(nodes.map((e) => e.breakpoint))];
