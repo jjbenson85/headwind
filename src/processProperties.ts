@@ -1,4 +1,4 @@
-import { PropertyProcessor } from "./main";
+import { Item, PropertyProcessor } from "./main";
 
 function extractValueFromSquareBrackets(str: string) {
   const regex = /\[(.*?)]/g;
@@ -6,24 +6,19 @@ function extractValueFromSquareBrackets(str: string) {
   return match;
 }
 export function processProperties(propertyProcessors: PropertyProcessor[]) {
-  return function <T extends { className: string }>(classNode: T) {
+  return function (classNode: Item) {
     const property = classNode.className.split("[")[0];
     const foundValues = extractValueFromSquareBrackets(classNode.className);
-    const items = [...foundValues].map(([_, item]) => {
+    const items = [...foundValues].map(([_, item]): Item => {
       const [value, breakpoint] = item.split("@");
       return {
-        className: classNode.className,
+        ...classNode,
         value,
         property,
         breakpoint,
-        rootVars: [] as string[],
       };
     });
 
-    const properties = propertyProcessors.reduce((acc, processor) => {
-      return processor(acc);
-    }, items);
-
-    return properties.map((item) => ({ ...classNode, ...item }));
+    return propertyProcessors.reduce((acc, processor) => processor(acc), items);
   };
 }

@@ -1,13 +1,6 @@
-export function addSelector<T extends { className: string }>(classNode: T) {
-  const selector = classNode.className
-    .replaceAll(":", "\\:")
-    .replaceAll(".", "\\.")
-    .replaceAll("@", "\\@")
-    .replaceAll("!", "\\!")
-    .replaceAll("%", "\\%")
-    .replaceAll("[", "\\[")
-    .replaceAll("]", "\\]")
-    .replaceAll("/", "\\/");
+import { Item } from "./main";
 
-  return { ...classNode, selector };
+export function addSelector(node: Item): Item {
+  node.selector = node.className.replace(/[:\.@!%\[\]\/]/g, (m) => "\\" + m);
+  return node;
 }

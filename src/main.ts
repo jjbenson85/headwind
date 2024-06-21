@@ -12,6 +12,17 @@ import { useSimpleShorthand } from "./useSimpleShorthand";
 import { useTextSizes } from "./useTextSizes";
 import { useUnits } from "./useUnits";
 
+export type Item = {
+  className: string;
+  property: string;
+  value: string;
+  breakpoint: string;
+  rootVars: string[];
+  psuedoSelectors: string[];
+  selector: string;
+};
+export type PropertyProcessor = (items: Item[]) => Item[];
+
 /**
  * Call this function to run the headwind utility
  * It will process the HTML and create a style tag with the utility classes
@@ -22,7 +33,6 @@ import { useUnits } from "./useUnits";
  */
 export function headwind(config: { propertyProcessors: PropertyProcessor[] }) {
   // document.addEventListener("DOMContentLoaded", () => main(config));
-
   const observer = new MutationObserver(() => {
     console.log("callback that runs when observer is triggered");
     main(config);
@@ -30,12 +40,16 @@ export function headwind(config: { propertyProcessors: PropertyProcessor[] }) {
 
   const body = document.querySelector("body");
   if (!body) return;
+
   observer.observe(body, {
     subtree: true,
     childList: true,
   });
 }
 function main(config?: { propertyProcessors: PropertyProcessor[] }): void {
+  console.time("headwind");
+  const style = document.createElement("style");
+
   const propertyProcessors: PropertyProcessor[] = [
     ...(config?.propertyProcessors ?? []),
     useImportant,
@@ -48,29 +62,32 @@ function main(config?: { propertyProcessors: PropertyProcessor[] }): void {
     useExtendedColors,
   ];
 
-  const classes = processHTML();
-
-  const t = classes
-    .map(addClassName)
-    .map(addSelector)
-    .map(addPsuedoSelectors)
-    .flatMap(processProperties(propertyProcessors));
-
-  const style = document.createElement("style");
-  style.textContent = createStyleTagText(t);
-  document.head.appendChild(style);
-}
-
-function processHTML() {
   const els = document.querySelectorAll("*");
-  return [...new Set([...els].flatMap((el) => [...el.classList]))];
+  const classes = getAllClasses(els);
+
+  let allNodes: Item[] = [];
+  for (const className of classes) {
+    const node = addClassName(className);
+    const node2 = addSelector(node);
+    const node3 = addPsuedoSelectors(node2);
+    const nodes = processProperties(propertyProcessors)(node3);
+    allNodes.push(...nodes);
+  }
+
+  style.textContent = createStyleTagText(allNodes);
+  document.head.appendChild(style);
+  console.timeEnd("headwind");
 }
 
-type Item = {
-  className: string;
-  property: string;
-  value: string;
-  breakpoint: string;
-  rootVars: string[];
-};
-export type PropertyProcessor = (items: Item[]) => Item[];
+function getAllClasses(els: NodeListOf<Element>) {
+  const bucket = new Set<string>();
+  for (const el of els) {
+    for (const className of el.classList) {
+      bucket.add(className);
+    }
+  }
+  return bucket;
+}
+
+
+
